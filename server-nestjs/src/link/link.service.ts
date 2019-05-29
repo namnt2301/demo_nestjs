@@ -42,10 +42,28 @@ export class LinkService {
       ' AND ' +
       last;
     const linkData = await this.linkRepository.query(query);
-
-    const linklist: [Link] = { ...linkData };
+    console.log(first);
+    console.log(last);
+    console.log(query);
+    console.log(linkData);
+    const linklist: [Link] = linkData.map(link => {
+      const newLink = {
+        id: link.id,
+        createAt: link.createAt,
+        description: link.description,
+        url: link.url,
+        postBy: {
+          id: link.postById,
+          user_name: link.user_name,
+          password: link.password,
+        },
+        voteBy: [{ id: 2, user_name: 'abc', password: 'abc' }],
+      };
+      return newLink;
+    });
     console.log(linklist);
     const feedData = { links: linklist, count: 1 };
+    console.log(feedData);
     return feedData;
   }
 }
