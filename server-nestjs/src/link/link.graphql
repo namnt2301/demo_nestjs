@@ -1,0 +1,27 @@
+type Mutation {
+  createLink(description: String, url: String!): Link!
+}
+
+type Query {
+  feed(first: Int!, skip: Int, orderBy: typeOfOrderBY): Feed!
+}
+enum typeOfOrderBY {
+  description_ASC
+  description_DESC
+  url_ASC
+  url_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+type Feed {
+  links: [Link]
+  count: Int!
+}
+type Link {
+  id: ID!
+  createAt: String!
+  description: String
+  url: String!
+  postBy: User!
+  voteBy: User
+}
