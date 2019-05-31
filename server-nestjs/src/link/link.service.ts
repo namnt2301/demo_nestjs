@@ -36,31 +36,31 @@ export class LinkService {
     orderBy: typeOfOrderBY,
   ): Promise<any> {
     const last = first + skip;
-    const query =
-      'SELECT link.* , user.* FROM link INNER JOIN user ON link.postById = user.id WHERE link.id BETWEEN ' +
-      first +
-      ' AND ' +
-      last;
-    const linkData = await this.linkRepository.query(query);
-    console.log(first);
-    console.log(last);
-    console.log(query);
-    console.log(linkData);
-    const linklist: [Link] = linkData.map(link => {
-      const newLink = {
-        id: link.id,
-        createAt: link.createAt,
-        description: link.description,
-        url: link.url,
-        postBy: {
-          id: link.postById,
-          user_name: link.user_name,
-          password: link.password,
-        },
-        voteBy: [{ id: 2, user_name: 'abc', password: 'abc' }],
-      };
-      return newLink;
-    });
+    // const query =
+    //   'SELECT link.* , user.* FROM link INNER JOIN user ON link.postById = user.id';
+    // const linkData: [Link] = await this.linkRepository.query(query);
+    // console.log(first);
+    // console.log(last);
+    // console.log(query);
+    // console.log(linkData);
+    // const linklist: [Link] = linkData.map(link => {
+    //   const newLink = {
+    //     id: link.id,
+    //     createAt: link.createAt,
+    //     description: link.description,
+    //     url: link.url,
+    //     postBy: {
+    //       id: link.postById,
+    //       user_name: link.user_name,
+    //       password: link.password,
+    //     },
+    //     voteBy: [{ id: 2, user_name: 'abc', password: 'abc' }],
+    //   };
+    //   return newLink;
+    // });
+    const condtion = 'link.id >= ' + first + ' AND link.id <= ' + last + ';';
+    console.log(condtion);
+    const linklist = await this.linkRepository.find({ where: condtion });
     console.log(linklist);
     const feedData = { links: linklist, count: 1 };
     console.log(feedData);

@@ -23,5 +23,5 @@ type Link {
   description: String
   url: String!
   postBy: User!
-  voteBy: User
+  voteBy: [User]
 }

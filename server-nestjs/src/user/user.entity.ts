@@ -20,6 +20,9 @@ export class User {
   @OneToMany(type => Link, link => link.postBy)
   links: Link[];
 
+  @ManyToMany(type => Link, link => link.voteBy)
+  voteLinks: Link[];
+
   // @ManyToMany(type => Link, link => link.voteBy)
   // voteLinks: Link[];
 }

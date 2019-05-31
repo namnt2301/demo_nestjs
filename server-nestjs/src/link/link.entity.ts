@@ -23,10 +23,10 @@ export class Link {
   description: string;
   @Column({ type: 'varchar', length: 255, nullable: false })
   url: string;
-  @ManyToOne(type => User, user => user.links, { nullable: false })
+  @ManyToOne(type => User, user => user.links, { nullable: false, eager: true })
   postBy: User;
 
-  @ManyToMany(type => User)
+  @ManyToMany(type => User, user => user.voteLinks, { eager: true })
   @JoinTable()
   voteBy: User[];
 }
