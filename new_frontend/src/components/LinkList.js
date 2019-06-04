@@ -4,12 +4,21 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 const FEED_QUERY = gql`
   {
-    feed(first: 2, skip: 1, orderBy: description_ASC) {
+    feed(first: 15, skip: 20, orderBy: description_ASC) {
       links {
         id
         createAt
         url
         description
+
+        postBy {
+          id
+          user_name
+        }
+        voteBy {
+          id
+          user_name
+        }
       }
     }
   }
@@ -27,8 +36,8 @@ class LinkList extends Component {
 
           return (
             <div>
-              {linksToRender.map(link => (
-                <Link key={link.id} link={link} />
+              {linksToRender.map((link, index) => (
+                <Link key={link.id} link={link} index={index} />
               ))}
             </div>
           );
