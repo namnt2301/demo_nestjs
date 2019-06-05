@@ -4,7 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { LinkModule } from './link/link.module';
 import * as path from 'path';
-import { UserModule } from './user/user.module';
+import { GraphQLDate, GraphQLTime, GraphQLDateTime } from 'graphql-iso-date';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -20,6 +21,11 @@ import { UserModule } from './user/user.module';
     GraphQLModule.forRoot({
       typePaths: [path.join(__dirname, '..', 'src', './**/*.graphql')],
       context: ({ req }) => ({ req }),
+      resolvers: {
+        DateTime: GraphQLDateTime,
+        Date: GraphQLDate,
+        Time: GraphQLTime,
+      },
       // definitions: {
       //   path: join(process.cwd(), 'src/graphql.ts'),
       // },
