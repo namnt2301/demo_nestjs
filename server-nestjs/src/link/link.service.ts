@@ -66,4 +66,26 @@ export class LinkService {
     console.log(feedData);
     return feedData;
   }
+
+  async createVote(linkId, user): Promise<any> {
+    const linkData = await this.linkRepository.findOne({
+      where: { id: linkId },
+    });
+    if (!linkData) {
+      throw Error('Link is not exist');
+    }
+    linkData.voteBy.push(user);
+    return await this.linkRepository.save(linkData);
+  }
+
+  async unVote(linkId, user): Promise<any> {
+    const linkData = await this.linkRepository.findOne({
+      where: { id: linkId },
+    });
+    if (!linkData) {
+      throw Error('Link is not exist');
+    }
+    linkData.voteBy.push(user);
+    return await this.linkRepository.save(linkData);
+  }
 }

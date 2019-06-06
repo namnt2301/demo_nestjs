@@ -22,6 +22,16 @@ export class LinkResolver {
     return a;
   }
 
+  @Mutation('vote')
+  @UseGuards(GqlAuthGuard)
+  async createVote(
+    @Args('linkId') linkId: number,
+    @CurrentUser() user: User,
+  ): Promise<any> {
+    const a = await this.linkService.createVote(linkId, user);
+    return a;
+  }
+
   @Query('feed')
   async getLinks(
     @Args('first') first: number,

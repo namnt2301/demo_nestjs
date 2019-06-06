@@ -3,6 +3,7 @@ scalar Date
 scalar Time
 type Mutation {
   createLink(description: String, url: String!): Link!
+  vote(linkId: ID!): Link!
 }
 
 type Query {
