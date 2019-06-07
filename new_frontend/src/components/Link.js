@@ -14,25 +14,66 @@ const VOTE_MUTATION = gql`
     }
   }
 `;
+
+const UNVOTE_MUTATION = gql`
+  mutation UnVoteMutation($linkId: ID!) {
+    unVote(linkId: $linkId) {
+      id
+      voteBy {
+        id
+        user_name
+      }
+    }
+  }
+`;
+
+function jwtDecode(t) {
+  let token = {};
+  token.raw = t;
+  token.header = JSON.parse(window.atob(t.split(".")[0]));
+  token.payload = JSON.parse(window.atob(t.split(".")[1]));
+  return token;
+}
 class Link extends Component {
   render() {
     const authToken = localStorage.getItem(AUTH_TOKEN);
+
+    let userID = null;
+    if (authToken) {
+      userID = jwtDecode(authToken).payload.id;
+    }
+
+    const liked = this.props.link.voteBy.find(user => {
+      return (user.id = userID);
+    });
     return (
       <div className="flex mt2 items-start">
         <div className="flex items-center">
           <span className="gray">{this.props.index + 1}.</span>
-          {authToken && (
-            <Mutation
-              mutation={VOTE_MUTATION}
-              variables={{ linkId: this.props.link.id }}
-            >
-              {voteMutation => (
-                <div className="ml1 gray f11" onClick={voteMutation}>
-                  ▲
-                </div>
-              )}
-            </Mutation>
-          )}
+          {authToken &&
+            (!liked ? (
+              <Mutation
+                mutation={VOTE_MUTATION}
+                variables={{ linkId: this.props.link.id }}
+              >
+                {voteMutation => (
+                  <button className="ml1 blue f11" onClick={voteMutation}>
+                    Like
+                  </button>
+                )}
+              </Mutation>
+            ) : (
+              <Mutation
+                mutation={UNVOTE_MUTATION}
+                variables={{ linkId: this.props.link.id }}
+              >
+                {voteMutation => (
+                  <button className="ml1 blue f11" onClick={voteMutation}>
+                    Dislike
+                  </button>
+                )}
+              </Mutation>
+            ))}
         </div>
         <div className="ml1">
           <div>
